@@ -35,6 +35,9 @@ const menuData = [{
   icon: 'table',
   path: 'list',
   children: [{
+    name: '作品表格',
+    path: 'work-list',
+  }, {
     name: '查询表格',
     path: 'table-list',
   }, {

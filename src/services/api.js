@@ -61,7 +61,13 @@ export async function queryFakeList(params) {
 }
 
 export async function fakeAccountLogin(params) {
-  return request('/api/login/account', {
+  // return request('/api/login/account', {
+  //   method: 'POST',
+  //   body: params,
+  // });
+  // alert(JSON.stringify(params));
+  // params貌似要加一个rememberMe:true,
+  return request('http://api.musixise.com/api/authenticate', {
     method: 'POST',
     body: params,
   });
@@ -76,4 +82,8 @@ export async function fakeRegister(params) {
 
 export async function queryNotices() {
   return request('/api/notices');
+}
+
+export async function queryWorks() {
+  return request('http://101.200.212.87:8082/api/work-lists?cacheBuster=1516717293945&page=0&size=20&sort=id,asc');
 }
