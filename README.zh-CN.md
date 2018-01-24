@@ -64,7 +64,7 @@
 $ git clone https://github.com/ant-design/ant-design-pro.git --depth=1
 $ cd ant-design-pro
 $ npm install
-$ npm start         # 访问 http://localhost:8000
+$ npm start         # 访问 http://localhost:8082
 ```
 
 也可以使用集成化的 [ant-design-pro-cli](https://github.com/ant-design/ant-design-pro-cli) 工具。

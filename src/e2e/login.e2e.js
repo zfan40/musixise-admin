@@ -5,11 +5,11 @@ describe('Login', () => {
   beforeEach(() => {
     page = Nightmare();
     page
-      .goto('http://localhost:8000/')
+      .goto('http://localhost:8082/')
       .evaluate(() => {
         window.localStorage.setItem('antd-pro-authority', 'guest');
       })
-      .goto('http://localhost:8000/#/user/login');
+      .goto('http://localhost:8082/#/user/login');
   });
 
   it('should login with failure', async () => {
