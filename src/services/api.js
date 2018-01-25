@@ -1,6 +1,8 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
 
+const headers = { 'Access-Control-Allow-Origin': '*' };
+
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }
@@ -66,11 +68,23 @@ export async function fakeAccountLogin(params) {
   //   body: params,
   // });
   // alert(JSON.stringify(params));
+  // ===================================
   // params貌似要加一个rememberMe:true,
-  return request('http://api.musixise.com/api/authenticate', {
+  const token = await request('http://api.musixise.com/api/authenticate', {
     method: 'POST',
+    headers,
     body: params,
   });
+  console.log(token);
+  if (token) {
+    headers.Authorization = `Bearer ${token.id_token}`;
+    return request('http://api.musixise.com/api/account', {
+      headers,
+      body: {},
+    });
+  } else {
+    return false;
+  }
 }
 
 export async function fakeRegister(params) {
