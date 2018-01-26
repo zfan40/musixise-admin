@@ -2,6 +2,10 @@ import { stringify } from 'qs';
 import request from '../utils/request';
 
 const headers = { 'Access-Control-Allow-Origin': '*' };
+const token = localStorage.getItem('token');
+if (token) {
+  headers.Authorization = `Bearer ${token}`;
+}
 
 export async function queryProjectNotice() {
   return request('/api/project/notice');
@@ -67,17 +71,17 @@ export async function fakeAccountLogin(params) {
   //   method: 'POST',
   //   body: params,
   // });
-  // alert(JSON.stringify(params));
   // ===================================
   // params貌似要加一个rememberMe:true,
-  const token = await request('http://api.musixise.com/api/authenticate', {
+  const newtoken = await request('http://api.musixise.com/api/authenticate', {
     method: 'POST',
-    headers,
+    headers: { 'Access-Control-Allow-Origin': '*' },
     body: params,
   });
-  console.log(token);
-  if (token) {
-    headers.Authorization = `Bearer ${token.id_token}`;
+  localStorage.setItem('token', newtoken.id_token);
+  console.log(newtoken);
+  if (newtoken) {
+    headers.Authorization = `Bearer ${newtoken.id_token}`;
     return request('http://api.musixise.com/api/account', {
       headers,
       body: {},
@@ -98,6 +102,27 @@ export async function queryNotices() {
   return request('/api/notices');
 }
 
-export async function queryWorks() {
-  return request('http://101.200.212.87:8082/api/work-lists?cacheBuster=1516717293945&page=0&size=20&sort=id,asc');
+export async function queryWork() {
+  return request('//api.musixise.com/api/work-lists?page=0&size=20&sort=id,asc', { headers });
+}
+
+export async function removeWork(params) {
+  return request(`//api.musixise.com/api/work-lists/${params.id}`, {
+    method: 'DELETE',
+    headers,
+    body: {
+      ...params,
+      method: 'delete',
+    },
+  });
+}
+
+export async function addWork(params) {
+  return request('/api/rule', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'post',
+    },
+  });
 }

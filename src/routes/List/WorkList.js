@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, Select, Icon, Button, Dropdown, Menu, InputNumber, DatePicker } from 'antd';
-import StandardTable from '../../components/StandardTable';
+import WorkTable from '../../components/WorkTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 import styles from './TableList.less';
@@ -243,7 +243,7 @@ export default class TableList extends PureComponent {
   render() {
     const { work: { data }, loading } = this.props;
     const { selectedRows } = this.state;
-
+    console.log('作品数据', data);
     const menu = (
       <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
         <Menu.Item key="remove">删除</Menu.Item>
@@ -252,7 +252,7 @@ export default class TableList extends PureComponent {
     );
 
     return (
-      <PageHeaderLayout title="查询表格">
+      <PageHeaderLayout title="作品表格">
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>
@@ -272,7 +272,7 @@ export default class TableList extends PureComponent {
                 )
               }
             </div>
-            <StandardTable
+            <WorkTable
               selectedRows={selectedRows}
               loading={loading}
               data={data}
