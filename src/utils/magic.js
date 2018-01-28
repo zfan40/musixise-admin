@@ -1,25 +1,29 @@
 const Tone = require('tone');
 const jscad = require('@jscad/openjscad');
-const fs = require('fs');
+// const fs = require('fs');
 const FileSaver = require('file-saver');
 
 const SAME_NOTE_INTERVAL = 1; // 同一个音不能相距小于1秒，不然音片打击出问题
-// const mbox = new Tone.Sampler({
-//   C4: 'C4.[mp3|ogg]',
-//   'D#4': 'Ds4.[mp3|ogg]',
-//   'F#4': 'Fs4.[mp3|ogg]',
-//   A4: 'A4.[mp3|ogg]',
-//   C5: 'C5.[mp3|ogg]',
-//   'D#5': 'Ds5.[mp3|ogg]',
-//   'F#5': 'Fs5.[mp3|ogg]',
-//   A5: 'A5.[mp3|ogg]',
-//   C6: 'C6.[mp3|ogg]',
-// }, {
-//   release: 1,
-//   baseUrl: '../assets/audio/',
-// }).toMaster();
-const mbox = new Tone.AMSynth({ harmonicity: 6 }).toMaster();
-export function buildModel(items) {
+
+const mbox = new Tone.MonoSynth({
+  volume: -10,
+  envelope: {
+    attack: 0.1,
+    decay: 0.3,
+    release: 2,
+  },
+  filterEnvelope: {
+    attack: 0.001,
+    decay: 0.01,
+    sustain: 0.5,
+    baseFrequency: 200,
+    octaves: 2.6,
+  },
+}).toMaster();
+
+let music;
+
+export function buildModel(items, workId) {
   console.log('== Enter RealMagic ==');
   // console.log(JSON.stringify(items));
   const tasksObj = {};
@@ -132,13 +136,36 @@ export function buildModel(items) {
   // generate final output data, choosing your prefered format
     const outputData = jscad.generateOutput('stlb', compiled);
     // hurray ,we can now write an stl file from our OpenJsCad script!
-    FileSaver.saveAs(outputData, 'mb.stl');
+    FileSaver.saveAs(outputData, workId ? `${workId}.stl` : 'mb.stl');
     // fs.writeFileSync('mb.stl', outputData.asBuffer());
   });
 }
 export function preview(items) {
-  new Tone.Part(((time, value) => {
-    mbox.triggerAttackRelease(value.note, '8n', time);
-  }), items).start(0);
-  Tone.Transport.start('+0.01', 0);
+  console.log('current state', Tone.Transport.state);
+  if (Tone.Transport.state === 'stopped') {
+    if (music) music.dispose();
+    music = new Tone.Part(((time, value) => {
+      mbox.triggerAttackRelease(value.note, '8n', time);
+    }), items).start(0, 0);
+    Tone.Transport.start('+0.01', 0);
+  } else {
+    Tone.Transport.stop(0);
+  }
+  // try {
+  //   Tone.Transport.stop(0);
+  //   console.log(1);
+  //   // Tone.Part.removeAll();
+  //   Tone.Transport.clear();
+  //   console.log(2);
+  //   music.dispose();
+  //   music = undefined;
+  //   console.log(3);
+  // } catch (e) {
+  //   //
+  // } finally {
+  //   music = new Tone.Part(((time, value) => {
+  //     mbox.triggerAttackRelease(value.note, '8n', time);
+  //   }), items).start(0, 0);
+  //   Tone.Transport.start('+0.01', 0);
+  // }
 }

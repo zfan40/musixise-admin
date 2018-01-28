@@ -10,26 +10,35 @@ export default {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
-      // format musixise auth to antd pro format
-      const final_response = {
-        status: 'ok',
-        type: 'account',
-        currentAuthority: 'admin',
-      };
-      yield put({
-        type: 'changeLoginStatus',
-        // payload: response,
-        payload: final_response,
-      });
-      // Login successfully
-      if (response.status === 'ok') {
-        // 非常粗暴的跳转,登陆成功之后权限会变成user或admin,会自动重定向到主页
-        // Login success after permission changes to admin or user
-        // The refresh will automatically redirect to the home page
-        // yield put(routerRedux.push('/'));
-        window.location.reload();
+      // effects里需要try catch啊！！！ 不然那个loading一直转。。。
+      try {
+        yield call(fakeAccountLogin, payload);
+        // const response = yield call(fakeAccountLogin, payload);
+        // format musixise auth to antd pro format
+        const finalResponse = {
+          status: 'ok',
+          type: 'account',
+          currentAuthority: 'admin',
+        };
+        yield put({
+          type: 'changeLoginStatus',
+          // payload: response,
+          payload: finalResponse,
+        });
+        // Login successfully
+        if (finalResponse.status === 'ok') {
+          // 非常粗暴的跳转,登陆成功之后权限会变成user或admin,会自动重定向到主页
+          // Login success after permission changes to admin or user
+          // The refresh will automatically redirect to the home page
+          // yield put(routerRedux.push('/'));
+          window.location.reload();
+        }
+      } catch (e) {
+        //
+      } finally {
+        //
       }
+
       // console.log(response);
     },
     *logout(_, { put, select }) {

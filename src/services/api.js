@@ -73,21 +73,29 @@ export async function fakeAccountLogin(params) {
   // });
   // ===================================
   // params貌似要加一个rememberMe:true,
-  const newtoken = await request('http://api.musixise.com/api/authenticate', {
-    method: 'POST',
-    headers: { 'Access-Control-Allow-Origin': '*' },
-    body: params,
-  });
-  localStorage.setItem('token', newtoken.id_token);
-  console.log(newtoken);
-  if (newtoken) {
-    headers.Authorization = `Bearer ${newtoken.id_token}`;
-    return request('http://api.musixise.com/api/account', {
-      headers,
-      body: {},
+  try {
+    const newtoken = await request('http://api.musixise.com/api/authenticate', {
+      method: 'POST',
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: params,
     });
-  } else {
-    return false;
+    localStorage.setItem('token', newtoken.id_token);
+    console.log(newtoken);
+    if (newtoken) {
+      headers.Authorization = `Bearer ${newtoken.id_token}`;
+      return request('http://api.musixise.com/api/account', {
+        headers,
+        body: {},
+      });
+    } else { // TODO ,这块的登录键一直在转，草
+      //
+    }
+  } catch (e) {
+    // alert('jb');
+    // const error = new Error();
+    // error.name = 400;
+    // error.response = 'response';
+    throw e;
   }
 }
 

@@ -19,7 +19,7 @@ class WorkTable extends PureComponent {
       });
     }
   }
-  getContentFromWorkUrl = (url) => {
+  previewFromWorkUrl = (url) => {
     console.log(url);
     const request = new XMLHttpRequest();
     request.open('GET', url, true);
@@ -33,7 +33,7 @@ class WorkTable extends PureComponent {
       }
     };
   }
-  buildModelFromWorkUrl = (url) => {
+  buildModelFromWorkUrl = (url, id) => {
     const request = new XMLHttpRequest();
     request.open('GET', url, true);
     request.send(null);
@@ -41,7 +41,7 @@ class WorkTable extends PureComponent {
       if (request.readyState === 4 && request.status === 200) {
         const type = request.getResponseHeader('Content-Type');
         if (type.indexOf('text') !== -1) {
-          buildModel(JSON.parse(request.responseText));
+          buildModel(JSON.parse(request.responseText), id);
         }
       }
     };
@@ -140,9 +140,9 @@ class WorkTable extends PureComponent {
         dataIndex: 'url',
         render: (a, b) => (
           <Fragment>
-            <a onClick={() => this.getContentFromWorkUrl(a)}>试听</a>
+            <a onClick={() => this.previewFromWorkUrl(a)}>试听</a>
             <Divider type="vertical" />
-            <a onClick={() => this.buildModelFromWorkUrl(a)}>生产模型</a>
+            <a onClick={() => this.buildModelFromWorkUrl(a, b.id)}>生产模型</a>
             <Divider type="vertical" />
             <a onClick={() => this.deleteWorkById(b.id)}>删除</a>
           </Fragment>

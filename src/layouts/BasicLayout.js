@@ -106,9 +106,11 @@ class BasicLayout extends React.PureComponent {
     const redirect = urlParams.searchParams.get('redirect');
     // Remove the parameters in the url
     if (redirect) {
+      // alert(1);
       urlParams.searchParams.delete('redirect');
       window.history.replaceState(null, 'redirect', urlParams.href);
     } else {
+      // alert(2);
       return '/dashboard/analysis';
     }
     return redirect;

@@ -21,6 +21,7 @@ const codeMessage = {
   504: '网关超时',
 };
 function checkStatus(response) {
+  console.log('checking', response);
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
@@ -67,7 +68,7 @@ export default function request(url, options) {
     .catch((e) => {
       const { dispatch } = store;
       const status = e.name;
-      if (status === 401) {
+      if (status === 401 || status === 'TypeError') { // 401 cors won't return 401, it will return as TypeError...shit
         dispatch({
           type: 'login/logout',
         });
