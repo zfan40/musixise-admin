@@ -103,7 +103,17 @@ export default class TableList extends PureComponent {
       selectedRows: rows,
     });
   }
-
+  handleDeleteWork = (id) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'work/remove',
+      payload: { id },
+    }).then(() => {
+      dispatch({
+        type: 'work/fetch',
+      });
+    });
+  }
   handleSearch = (e) => {
     e.preventDefault();
 
@@ -278,6 +288,7 @@ export default class TableList extends PureComponent {
               data={data}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
+              onDeleteWork={this.handleDeleteWork}
             />
           </div>
         </Card>

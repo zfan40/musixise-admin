@@ -28,13 +28,14 @@ export default {
       });
       if (callback) callback();
     },
-    *remove({ payload, callback }, { call, put }) {
-      const response = yield call(removeWork, payload);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
-      if (callback) callback();
+    *remove({ payload }, { call }) {
+      yield call(removeWork, payload);
+      // const response = yield call(removeWork, payload);
+      // yield put({
+      //   type: 'save',
+      //   payload: response,
+      // });
+      // if (callback) callback();
     },
   },
 

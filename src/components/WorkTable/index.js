@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 // import moment from 'moment';
-import { Table, Alert, Divider } from 'antd';
+import { Table, Alert, Divider, Popconfirm } from 'antd';
 import styles from './index.less';
 import { buildModel, preview } from '../../utils/magic';
 // const statusMap = ['default', 'processing', 'success', 'error'];
@@ -47,7 +47,9 @@ class WorkTable extends PureComponent {
     };
   }
   deleteWorkById = (id) => {
-    console.log(id);
+    if (this.props.onDeleteWork) {
+      this.props.onDeleteWork(id);
+    }
   }
   handleRowSelectChange = (selectedRowKeys, selectedRows) => {
     const totalCallNo = selectedRows.reduce((sum, val) => {
@@ -77,7 +79,7 @@ class WorkTable extends PureComponent {
 
     const columns = [
       {
-        title: '作品id',
+        title: 'id',
         dataIndex: 'id',
       },
       {
@@ -144,7 +146,7 @@ class WorkTable extends PureComponent {
             <Divider type="vertical" />
             <a onClick={() => this.buildModelFromWorkUrl(a, b.id)}>生产模型</a>
             <Divider type="vertical" />
-            <a onClick={() => this.deleteWorkById(b.id)}>删除</a>
+            <Popconfirm title="确认删除？" onConfirm={() => this.deleteWorkById(b.id)}><a>删除</a></Popconfirm>
           </Fragment>
         ),
       },
