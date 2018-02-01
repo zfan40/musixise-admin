@@ -126,7 +126,7 @@ export function buildModel(items, workId) {
   }
 
   function main() {
-    let cylinderBody = difference(cylinder({h: 19.9,r: OUTER_RADIUS,center: true}),cylinder({h: 19.9,r: INNER_RADIUS,center: true}))
+    let cylinderBody = difference(cylinder({h: 19.9,r: OUTER_RADIUS,center: true}),cylinder({h: 19.9,r: INNER_RADIUS,center: true}),generatePin(0, -2),generatePin(5, -2),generatePin(10, -2))
     let holes = union(${musicboxPins})
     return union(cylinderBody,holes).translate([0, 0, 0]).scale(1);
   }`;
