@@ -147,6 +147,8 @@ export function preview(items) {
     music = new Tone.Part(((time, value) => {
       mbox.triggerAttackRelease(value.note, '8n', time);
     }), items).start(0, 0);
+    music.loop = true;
+    music.loopEnd = 17; // 17s一个循环
     Tone.Transport.start('+0.01', 0);
   } else {
     Tone.Transport.stop(0);
