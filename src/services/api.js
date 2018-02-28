@@ -134,3 +134,28 @@ export async function addWork(params) {
     },
   });
 }
+
+export async function queryMusixiser() {
+  return request('//api.musixise.com/api/musixisers?page=0&size=20&sort=id,asc', { headers });
+}
+
+export async function removeMusixiser(params) {
+  return request(`//api.musixise.com/api/musixisers/${params.id}`, {
+    method: 'DELETE',
+    headers,
+    body: {
+      ...params,
+      method: 'delete',
+    },
+  });
+}
+
+export async function addMusixiser(params) {
+  return request('/api/rule', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'post',
+    },
+  });
+}
