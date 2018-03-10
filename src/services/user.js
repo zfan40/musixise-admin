@@ -12,9 +12,9 @@ export async function query() {
 }
 
 export async function queryCurrent() {
-  // return request('http://api.musixise.com/api/account', { // TODO: 貌似格式不一样
-  //   headers,
-  //   body: {},
-  // });
-  return request('/api/currentUser', { headers }); // this is mock
+  return request('http://api.musixise.com/api/account', { // TODO: 貌似格式不一样
+    headers,
+    body: {},
+  });
+  // return request('/api/currentUser', { headers }); // this is mock
 }
