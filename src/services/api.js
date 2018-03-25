@@ -135,8 +135,12 @@ export async function addWork(params) {
   });
 }
 
+export async function getMusixiserById(params) {
+  return request(`//api.musixise.com/api/musixisers/${params.id}`, { headers });
+}
+
 export async function queryMusixiser() {
-  return request('//api.musixise.com/api/musixisers?page=0&size=20&sort=id,asc', { headers });
+  return request('//api.musixise.com/api/musixisers?page=0&size=20&sort=id,desc', { headers });
 }
 
 export async function removeMusixiser(params) {

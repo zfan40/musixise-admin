@@ -44,7 +44,7 @@ export default class BasicProfile extends Component {
     });
   }
 
-  render() {
+render() {
     const { profile, loading } = this.props;
     const { basicGoods, basicProgress } = profile;
     let goodsData = [];

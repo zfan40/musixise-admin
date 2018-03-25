@@ -112,6 +112,9 @@ export const getRouterData = (app) => {
     '/list/musixiser-list': {
       component: dynamicWrapper(app, ['musixiser'], () => import('../routes/List/MusixiserList')),
     },
+    '/list/musixiser-profile/:id': {
+      component: dynamicWrapper(app, ['musixiser'], () => import('../routes/Profile/MusixiserProfile')),
+    },
     '/list/work-list': {
       component: dynamicWrapper(app, ['work'], () => import('../routes/List/WorkList')),
     },

@@ -2,6 +2,8 @@ import React, { PureComponent, Fragment } from 'react';
 // import moment from 'moment';
 import { Table, Alert, Divider, Popconfirm } from 'antd';
 import styles from './index.less';
+import { Link, Redirect, Switch, Route } from 'dva/router';
+
 // const statusMap = ['default', 'processing', 'success', 'error'];
 class MusixiserTable extends PureComponent {
   state = {
@@ -18,6 +20,13 @@ class MusixiserTable extends PureComponent {
       });
     }
   }
+
+  showMusixiserById = (row) => {
+    if (this.props.onSelectRow) {
+      this.props.onSelectRow(row);
+    }
+  }
+
   deleteMusixiserById = (id) => {
     if (this.props.onDeleteMusixiser) {
       this.props.onDeleteMusixiser(id);
@@ -62,6 +71,8 @@ class MusixiserTable extends PureComponent {
       {
         title: '用户名',
         dataIndex: 'realname',
+        render: (text, record) => <Link to={`/list/musixiser-profile/${record.id}`}>{text}</Link>,
+
       },
       {
         title: '电话',
@@ -86,13 +97,13 @@ class MusixiserTable extends PureComponent {
       {
         title: '操作',
         dataIndex: 'url',
-        render: (a, b) => (
+        render: (text, record) => (
           <Fragment>
-            <a>查看</a>
+            <Link to={`/list/musixiser-profile/${record.id}`}>查看</Link>
             <Divider type="vertical" />
             <a>编辑</a>
             <Divider type="vertical" />
-            <Popconfirm title="确认删除？" onConfirm={() => this.deleteMusixiserById(b.id)}><a>删除</a></Popconfirm>
+            <Popconfirm title="确认删除？" onConfirm={() => this.deleteMusixiserById(record.id)}><a>删除</a></Popconfirm>
           </Fragment>
         ),
       },

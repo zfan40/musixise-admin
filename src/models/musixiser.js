@@ -1,4 +1,4 @@
-import { queryMusixiser, removeMusixiser, addMusixiser } from '../services/api';
+import { queryMusixiser, removeMusixiser, addMusixiser, getMusixiserById } from '../services/api';
 
 export default {
   namespace: 'musixiser',
@@ -18,6 +18,13 @@ export default {
       yield put({
         type: 'save',
         payload: formatterResponse,
+      });
+    },
+    *getById({ payload }, { call, put }) {
+      const response = yield call(getMusixiserById, payload);
+      yield put({
+        type: 'save',
+        payload: { list: response },
       });
     },
     *add({ payload, callback }, { call, put }) {
