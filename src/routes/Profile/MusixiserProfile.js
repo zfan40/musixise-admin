@@ -31,6 +31,7 @@ export default class MusixiserProfile extends PureComponent {
           <Description><Avatar size="large" src={`${one.smallAvatar}`} /></Description>
           <Divider style={{ marginBottom: 32 }} />
           <DescriptionList size="large" title="基本信息" style={{ marginBottom: 32 }}>
+            <Description term="Id">{one.id}</Description>
             <Description term="userId">{one.userId}</Description>
             <Description term="昵称">{one.realname}</Description>
             <Description term="创建时间">{one.createdDate}</Description>
