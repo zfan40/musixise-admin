@@ -1,8 +1,9 @@
 import React, { PureComponent, Fragment } from 'react';
+import { Link, Redirect, Switch, Route } from 'dva/router';
 // import moment from 'moment';
 import { Table, Alert, Divider, Popconfirm } from 'antd';
+import MusixiserModal from '../Editor/MusixiserModal';
 import styles from './index.less';
-import { Link, Redirect, Switch, Route } from 'dva/router';
 
 // const statusMap = ['default', 'processing', 'success', 'error'];
 class MusixiserTable extends PureComponent {
@@ -24,6 +25,12 @@ class MusixiserTable extends PureComponent {
   showMusixiserById = (row) => {
     if (this.props.onSelectRow) {
       this.props.onSelectRow(row);
+    }
+  }
+
+  handleUpdate = (id, values) => {
+    if (this.props.handleUpdate) {
+      this.props.handleUpdate(id, values);
     }
   }
 
@@ -101,9 +108,12 @@ class MusixiserTable extends PureComponent {
           <Fragment>
             <Link to={`/list/musixiser-profile/${record.id}`}>查看</Link>
             <Divider type="vertical" />
-            <a>编辑</a>
+
+            <MusixiserModal record={record} onOk={this.handleUpdate.bind(null, record.id)}>
+              <a>编辑</a>
+            </MusixiserModal>
             <Divider type="vertical" />
-            <Popconfirm title="确认删除？" onConfirm={() => this.deleteMusixiserById(record.id)}><a>删除</a></Popconfirm>
+            <Popconfirm title="确认删除？" onConfirm={() => this.handleUpdate(record)}><a>删除</a></Popconfirm>
           </Fragment>
         ),
       },

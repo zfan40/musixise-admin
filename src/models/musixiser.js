@@ -35,6 +35,10 @@ export default {
       });
       if (callback) callback();
     },
+
+    *update({ payload }, { call, put}) {
+      console.log(payload);
+    },
     *remove({ payload }, { call }) {
       yield call(removeMusixiser, payload);
       // const response = yield call(removeMusixiser, payload);

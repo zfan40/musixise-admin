@@ -5,6 +5,7 @@ import MusixiserTable from '../../components/MusixiserTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 import styles from './MusixiserList.less';
+import MusixiserModal from '../../components/Editor/MusixiserModal';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -52,6 +53,14 @@ export default class TableList extends PureComponent {
     dispatch({
       type: 'musixiser/fetch',
       payload: params,
+    });
+  }
+
+  handleUpdate = (id, value) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'musixiser/update',
+      payload: { id, value },
     });
   }
 
@@ -290,7 +299,9 @@ export default class TableList extends PureComponent {
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
               onDeleteMusixiser={this.handleDeleteMusixiser}
+              handleUpdate={this.handleUpdate}
             />
+
           </div>
         </Card>
       </PageHeaderLayout>
