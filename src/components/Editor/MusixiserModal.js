@@ -47,7 +47,7 @@ class MusixiserModal extends Component {
     };
 
     return (
-      <div>
+      <span>
         <span onClick={this.showModal}>
           {children}
         </span>
@@ -70,7 +70,7 @@ class MusixiserModal extends Component {
             </FormItem>
           </Form>
         </Modal>
-      </div>
+      </span>
     );
   }
 }

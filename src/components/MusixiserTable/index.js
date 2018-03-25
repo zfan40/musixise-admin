@@ -28,7 +28,7 @@ class MusixiserTable extends PureComponent {
     }
   }
 
-  handleUpdate = (id, values) => {
+  handleUpdate(id, values) {
     if (this.props.handleUpdate) {
       this.props.handleUpdate(id, values);
     }
@@ -109,7 +109,7 @@ class MusixiserTable extends PureComponent {
             <Link to={`/list/musixiser-profile/${record.id}`}>查看</Link>
             <Divider type="vertical" />
 
-            <MusixiserModal record={record} onOk={this.handleUpdate.bind(null, record.id)}>
+            <MusixiserModal record={record} onOk={() => this.handleUpdate(record)}>
               <a>编辑</a>
             </MusixiserModal>
             <Divider type="vertical" />
