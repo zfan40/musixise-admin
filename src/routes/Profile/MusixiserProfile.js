@@ -4,7 +4,7 @@ import { connect } from 'dva';
 import { Card, Divider, Avatar } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import DescriptionList from '../../components/DescriptionList/index';
-import styles from './MusixiserProfile.less';
+// import styles from './MusixiserProfile.less';
 
 const { Description } = DescriptionList;
 
@@ -22,8 +22,8 @@ export default class MusixiserProfile extends PureComponent {
     });
   }
   render() {
-    const { musixiser: { data: { list: one } }, loading } = this.props;
-    console.log(one);
+    const { musixiser: { one }, loading } = this.props;
+    console.log('one', one);
     return (
       <PageHeaderLayout title="基础详情页">
         <Card bordered={false}>

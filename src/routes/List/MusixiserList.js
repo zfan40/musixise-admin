@@ -5,7 +5,7 @@ import MusixiserTable from '../../components/MusixiserTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 import styles from './MusixiserList.less';
-import MusixiserModal from '../../components/Editor/MusixiserModal';
+// import MusixiserModal from '../../components/Editor/MusixiserModal';
 
 const FormItem = Form.Item;
 const { Option } = Select;

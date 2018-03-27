@@ -1,4 +1,4 @@
-import { queryMusixiser, removeMusixiser, addMusixiser, getMusixiserById } from '../services/api';
+import { queryMusixiser, removeMusixiser, addMusixiser, updateMusixiser, getMusixiserById } from '../services/api';
 
 export default {
   namespace: 'musixiser',
@@ -8,6 +8,7 @@ export default {
       list: [],
       pagination: {},
     },
+    one: {},
   },
 
   effects: {
@@ -23,30 +24,20 @@ export default {
     *getById({ payload }, { call, put }) {
       const response = yield call(getMusixiserById, payload);
       yield put({
-        type: 'save',
-        payload: { list: response },
-      });
-    },
-    *add({ payload, callback }, { call, put }) {
-      const response = yield call(addMusixiser, payload);
-      yield put({
-        type: 'save',
+        type: 'saveOne',
         payload: response,
       });
-      if (callback) callback();
     },
-
-    *update({ payload }, { call, put}) {
-      console.log(payload);
+    // IMPORTANT: for operations like add, update, remove
+    // after api call, directly refresh data at page.js in callback
+    *add({ payload }, { call }) {
+      yield call(addMusixiser, payload);
+    },
+    *update({ payload }, { call }) {
+      yield call(updateMusixiser, payload);
     },
     *remove({ payload }, { call }) {
       yield call(removeMusixiser, payload);
-      // const response = yield call(removeMusixiser, payload);
-      // yield put({
-      //   type: 'save',
-      //   payload: response,
-      // });
-      // if (callback) callback();
     },
   },
 
@@ -55,6 +46,12 @@ export default {
       return {
         ...state,
         data: action.payload,
+      };
+    },
+    saveOne(state, action) {
+      return {
+        ...state,
+        one: action.payload,
       };
     },
   },
