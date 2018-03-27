@@ -153,13 +153,23 @@ export async function removeMusixiser(params) {
     },
   });
 }
-
+export async function updateMusixiser(params) {
+  // TODO
+  // return request(`//api.musixise.com/api/musixisers/${params.id}`, {
+  //   method: 'POST',
+  //   headers,
+  //   body: {
+  //     ...params,
+  //     method: 'delete',
+  //   },
+  // });
+}
 export async function addMusixiser(params) {
-  return request('/api/rule', {
-    method: 'POST',
-    body: {
-      ...params,
-      method: 'post',
-    },
-  });
+  // return request('/api/rule', {
+  //   method: 'POST',
+  //   body: {
+  //     ...params,
+  //     method: 'post',
+  //   },
+  // });
 }

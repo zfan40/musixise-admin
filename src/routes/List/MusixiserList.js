@@ -56,14 +56,6 @@ export default class TableList extends PureComponent {
     });
   }
 
-  handleUpdate = (id, value) => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'musixiser/update',
-      payload: { id, value },
-    });
-  }
-
   handleFormReset = () => {
     const { form, dispatch } = this.props;
     form.resetFields();
@@ -113,10 +105,23 @@ export default class TableList extends PureComponent {
     });
   }
   handleDeleteMusixiser = (id) => {
+    console.log('deleting musixiser with ID: ', id);
     const { dispatch } = this.props;
     dispatch({
       type: 'musixiser/remove',
       payload: { id },
+    }).then(() => {
+      dispatch({
+        type: 'musixiser/fetch',
+      });
+    });
+  }
+  handleUpdate = (id, value) => {
+    console.log('updating musixiser with ID', id);
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'musixiser/update',
+      payload: { id, value },
     }).then(() => {
       dispatch({
         type: 'musixiser/fetch',
@@ -298,7 +303,7 @@ export default class TableList extends PureComponent {
               data={data}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
-              onDeleteMusixiser={this.handleDeleteMusixiser}
+              handleDeleteMusixiser={this.handleDeleteMusixiser}
               handleUpdate={this.handleUpdate}
             />
 

@@ -28,15 +28,17 @@ class MusixiserTable extends PureComponent {
     }
   }
 
-  handleUpdate(id, values) {
+  handleUpdate = (id, values) => {
+    console.log('on ok value', values.realname);
     if (this.props.handleUpdate) {
-      this.props.handleUpdate(id, values);
+      this.props.handleUpdate(id, values.realname);
     }
   }
 
-  deleteMusixiserById = (id) => {
-    if (this.props.onDeleteMusixiser) {
-      this.props.onDeleteMusixiser(id);
+  handleDelete = (id) => {
+    console.log('componenet', id);
+    if (this.props.handleDeleteMusixiser) {
+      this.props.handleDeleteMusixiser(id);
     }
   }
   handleRowSelectChange = (selectedRowKeys, selectedRows) => {
@@ -109,11 +111,11 @@ class MusixiserTable extends PureComponent {
             <Link to={`/list/musixiser-profile/${record.id}`}>查看</Link>
             <Divider type="vertical" />
 
-            <MusixiserModal record={record} onOk={() => this.handleUpdate(record)}>
+            <MusixiserModal record={record} onOk={res => this.handleUpdate(record.id, res)}>
               <a>编辑</a>
             </MusixiserModal>
             <Divider type="vertical" />
-            <Popconfirm title="确认删除？" onConfirm={() => this.handleUpdate(record)}><a>删除</a></Popconfirm>
+            <Popconfirm title="确认删除？" onConfirm={() => this.handleDelete(record.id)}><a>删除</a></Popconfirm>
           </Fragment>
         ),
       },
