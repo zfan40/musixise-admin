@@ -14,7 +14,6 @@ const { Description } = DescriptionList;
 }))
 
 export default class MusixiserProfile extends PureComponent {
-
   componentDidMount() {
     const { dispatch, match: { params } } = this.props;
     dispatch({
@@ -24,11 +23,11 @@ export default class MusixiserProfile extends PureComponent {
   }
   render() {
     const { musixiser: { data: { list: one } }, loading } = this.props;
-    console.log(one)
+    console.log(one);
     return (
       <PageHeaderLayout title="基础详情页">
         <Card bordered={false}>
-          <Description><Avatar size="large" src={`${one.smallAvatar}`} /></Description>
+          <Description><Avatar size="large" src={one.smallAvatar} /></Description>
           <Divider style={{ marginBottom: 32 }} />
           <DescriptionList size="large" title="基本信息" style={{ marginBottom: 32 }}>
             <Description term="Id">{one.id}</Description>
