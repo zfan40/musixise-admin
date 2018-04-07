@@ -27,6 +27,10 @@ export default class TableList extends PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'musixiser/fetch',
+      payload: {
+        currentPage: 1,
+        pageSize: 50,
+      },
     });
   }
 
@@ -49,7 +53,7 @@ export default class TableList extends PureComponent {
     if (sorter.field) {
       params.sorter = `${sorter.field}_${sorter.order}`;
     }
-
+    console.log('jjj', params);
     dispatch({
       type: 'musixiser/fetch',
       payload: params,
@@ -57,6 +61,7 @@ export default class TableList extends PureComponent {
   }
 
   handleFormReset = () => {
+    console.log('ppp');
     const { form, dispatch } = this.props;
     form.resetFields();
     this.setState({
@@ -64,7 +69,10 @@ export default class TableList extends PureComponent {
     });
     dispatch({
       type: 'musixiser/fetch',
-      payload: {},
+      payload: {
+        currentPage: 1,
+        pageSize: 50,
+      },
     });
   }
 
@@ -113,6 +121,10 @@ export default class TableList extends PureComponent {
     }).then(() => {
       dispatch({
         type: 'musixiser/fetch',
+        payload: {
+          currentPage: 1,
+          pageSize: 50,
+        },
       });
     });
   }
@@ -125,6 +137,10 @@ export default class TableList extends PureComponent {
     }).then(() => {
       dispatch({
         type: 'musixiser/fetch',
+        payload: {
+          currentPage: 1,
+          pageSize: 50,
+        },
       });
     });
   }
@@ -139,6 +155,8 @@ export default class TableList extends PureComponent {
       const values = {
         ...fieldsValue,
         updatedAt: fieldsValue.updatedAt && fieldsValue.updatedAt.valueOf(),
+        currentPage: 1,
+        pageSize: 50,
       };
 
       this.setState({

@@ -12,7 +12,7 @@ export async function query() {
 }
 
 export async function queryCurrent() {
-  return request('http://api.musixise.com/api/account', { // TODO: 貌似格式不一样
+  return request('http://api.musixise.com/api/v1/account', { // TODO: 貌似格式不一样
     headers,
     body: {},
   });

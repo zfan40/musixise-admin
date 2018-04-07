@@ -6,6 +6,7 @@ const token = localStorage.getItem('token');
 if (token) {
   headers.Authorization = `Bearer ${token}`;
 }
+const tokenObj = { access_token: '' };
 
 export async function queryProjectNotice() {
   return request('/api/project/notice');
@@ -74,7 +75,7 @@ export async function fakeAccountLogin(params) {
   // ===================================
   // params貌似要加一个rememberMe:true,
   try {
-    const newtoken = await request('http://api.musixise.com/api/authenticate', {
+    const newtoken = await request('http://api.musixise.com/api/v1/authenticate', {
       method: 'POST',
       headers: { 'Access-Control-Allow-Origin': '*' },
       body: params,
@@ -83,9 +84,17 @@ export async function fakeAccountLogin(params) {
     console.log(newtoken);
     if (newtoken) {
       headers.Authorization = `Bearer ${newtoken.id_token}`;
-      return request('http://api.musixise.com/api/account', {
+      tokenObj.access_token = newtoken.id_token;
+      /* previous version , called /account */
+      // return request('http://api.musixise.com/api/v1/account', {
+      //   headers,
+      //   body: {},
+      // });
+      return request('http://api.musixise.com/api/v1/user/getInfo', {
         headers,
-        body: {},
+        body: {
+          ...tokenObj,
+        },
       });
     } else { // TODO ,这块的登录键一直在转，草
       //
@@ -111,14 +120,15 @@ export async function queryNotices() {
 }
 
 export async function queryWork() {
-  return request('//api.musixise.com/api/work-lists?page=0&size=20&sort=id,asc', { headers });
+  return request('//api.musixise.com/api/v1/work-lists?page=0&size=20&sort=id,asc', { headers, body: { ...tokenObj } });
 }
 
 export async function removeWork(params) {
-  return request(`//api.musixise.com/api/work-lists/${params.id}`, {
+  return request(`//api.musixise.com/api/v1/work-lists/${params.id}`, {
     method: 'DELETE',
     headers,
     body: {
+      ...tokenObj,
       ...params,
       method: 'delete',
     },
@@ -129,6 +139,7 @@ export async function addWork(params) {
   return request('/api/rule', {
     method: 'POST',
     body: {
+      ...tokenObj,
       ...params,
       method: 'post',
     },
@@ -136,18 +147,19 @@ export async function addWork(params) {
 }
 
 export async function getMusixiserById(params) {
-  return request(`//api.musixise.com/api/musixisers/${params.id}`, { headers });
+  return request(`//api.musixise.com/api/v1/musixisers/${params.id}`, { headers, body: { ...tokenObj } });
 }
 
-export async function queryMusixiser() {
-  return request('//api.musixise.com/api/musixisers?page=0&size=20&sort=id,desc', { headers });
+export async function queryMusixiser(params) {
+  return request(`//api.musixise.com/api/v1/musixisers?page=${params.currentPage}&size=${params.pageSize}&sort=id,desc`, { headers, body: { ...tokenObj } });
 }
 
 export async function removeMusixiser(params) {
-  return request(`//api.musixise.com/api/musixisers/${params.id}`, {
+  return request(`//api.musixise.com/api/v1/musixisers/${params.id}`, {
     method: 'DELETE',
     headers,
     body: {
+      ...tokenObj,
       ...params,
       method: 'delete',
     },
@@ -155,7 +167,7 @@ export async function removeMusixiser(params) {
 }
 export async function updateMusixiser(params) {
   // TODO
-  // return request(`//api.musixise.com/api/musixisers/${params.id}`, {
+  // return request(`//api.musixise.com/api/v1/musixisers/${params.id}`, {
   //   method: 'POST',
   //   headers,
   //   body: {

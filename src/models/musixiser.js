@@ -14,6 +14,7 @@ export default {
   effects: {
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryMusixiser, payload);
+      console.log('!!!!!', response);
       // 缺少分页信息！
       const formatterResponse = { list: response, pagination: {} };
       yield put({
