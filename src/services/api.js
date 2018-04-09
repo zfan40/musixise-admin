@@ -1,12 +1,21 @@
-import { stringify } from 'qs';
+import {
+  stringify,
+} from 'qs';
 import request from '../utils/request';
 
-const headers = { 'Access-Control-Allow-Origin': '*' };
+const headers = {
+  'Access-Control-Allow-Origin': '*',
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
+};
 const token = localStorage.getItem('token');
+const tokenObj = {
+  access_token: '',
+};
 if (token) {
-  headers.Authorization = `Bearer ${token}`;
+  // headers.Authorization = `Bearer ${token}`;
+  tokenObj.access_token = token;
 }
-const tokenObj = { access_token: '' };
 
 export async function queryProjectNotice() {
   return request('/api/project/notice');
@@ -74,16 +83,17 @@ export async function fakeAccountLogin(params) {
   // });
   // ===================================
   // params貌似要加一个rememberMe:true,
+  alert(JSON.stringify(params));
   try {
-    const newtoken = await request('http://api.musixise.com/api/v1/authenticate', {
+    const newtoken = await request('http://api.musixise.com/api/v1/user/authenticate', {
       method: 'POST',
-      headers: { 'Access-Control-Allow-Origin': '*' },
-      body: params,
+      headers,
+      body: { a: 2 },
     });
     localStorage.setItem('token', newtoken.id_token);
     console.log(newtoken);
     if (newtoken) {
-      headers.Authorization = `Bearer ${newtoken.id_token}`;
+      // headers.Authorization = `Bearer ${newtoken.id_token}`;
       tokenObj.access_token = newtoken.id_token;
       /* previous version , called /account */
       // return request('http://api.musixise.com/api/v1/account', {
@@ -120,7 +130,12 @@ export async function queryNotices() {
 }
 
 export async function queryWork() {
-  return request('//api.musixise.com/api/v1/work-lists?page=0&size=20&sort=id,asc', { headers, body: { ...tokenObj } });
+  return request('//api.musixise.com/api/v1/work-lists?page=0&size=20&sort=id,asc', {
+    headers,
+    body: {
+      ...tokenObj,
+    },
+  });
 }
 
 export async function removeWork(params) {
@@ -130,7 +145,6 @@ export async function removeWork(params) {
     body: {
       ...tokenObj,
       ...params,
-      method: 'delete',
     },
   });
 }
@@ -147,11 +161,21 @@ export async function addWork(params) {
 }
 
 export async function getMusixiserById(params) {
-  return request(`//api.musixise.com/api/v1/musixisers/${params.id}`, { headers, body: { ...tokenObj } });
+  return request(`//api.musixise.com/api/v1/musixisers/${params.id}`, {
+    headers,
+    body: {
+      ...tokenObj,
+    },
+  });
 }
 
 export async function queryMusixiser(params) {
-  return request(`//api.musixise.com/api/v1/musixisers?page=${params.currentPage}&size=${params.pageSize}&sort=id,desc`, { headers, body: { ...tokenObj } });
+  return request(`//api.musixise.com/api/v1/musixisers?page=${params.currentPage}&size=${params.pageSize}&sort=id,desc`, {
+    headers,
+    body: {
+      ...tokenObj,
+    },
+  });
 }
 
 export async function removeMusixiser(params) {
