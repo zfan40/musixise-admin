@@ -88,7 +88,7 @@ export async function fakeAccountLogin(params) {
     const newtoken = await request('http://api.musixise.com/api/v1/user/authenticate', {
       method: 'POST',
       headers,
-      body: { a: 2 },
+      body: params,
     });
     localStorage.setItem('token', newtoken.id_token);
     console.log(newtoken);
