@@ -22,7 +22,7 @@ export default {
       console.log('auth', auth);
       yield put({
         type: 'saveCurrentUser',
-        payload: response,
+        payload: response.data,
       });
     },
   },

@@ -88,23 +88,23 @@ export async function fakeAccountLogin(params) {
     const newtoken = await request('http://api.musixise.com/api/v1/user/authenticate', {
       method: 'POST',
       headers,
-      body: params,
+      body: {
+        userName: params.username,
+        passWord: params.password,
+      },
     });
-    localStorage.setItem('token', newtoken.id_token);
-    console.log(newtoken);
+    localStorage.setItem('token', newtoken.data.id_token);
+    console.log('898989898', newtoken);
     if (newtoken) {
       // headers.Authorization = `Bearer ${newtoken.id_token}`;
-      tokenObj.access_token = newtoken.id_token;
+      tokenObj.access_token = newtoken.data.id_token;
       /* previous version , called /account */
       // return request('http://api.musixise.com/api/v1/account', {
       //   headers,
       //   body: {},
       // });
-      return request('http://api.musixise.com/api/v1/user/getInfo', {
+      return request(`http://api.musixise.com/api/v1/user/getInfo?access_token=${tokenObj.access_token}`, {
         headers,
-        body: {
-          ...tokenObj,
-        },
       });
     } else { // TODO ,这块的登录键一直在转，草
       //

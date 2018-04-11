@@ -15,11 +15,8 @@ export async function query() {
 }
 
 export async function queryCurrent() {
-  return request('http://api.musixise.com/api/v1/user/getInfo', { // TODO: 貌似格式不一样
+  return request(`http://api.musixise.com/api/v1/user/getInfo?access_token=${tokenObj.access_token}`, { // TODO: 貌似格式不一样
     headers,
-    body: {
-      ...tokenObj,
-    },
   });
   // return request('/api/currentUser', { headers }); // this is mock
 }
