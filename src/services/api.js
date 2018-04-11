@@ -155,7 +155,6 @@ export async function addWork(params) {
     body: {
       ...tokenObj,
       ...params,
-      method: 'post',
     },
   });
 }
@@ -170,7 +169,7 @@ export async function getMusixiserById(params) {
 }
 
 export async function queryMusixiser(params) {
-  return request(`//api.musixise.com/api/v1/musixisers?page=${params.currentPage}&size=${params.pageSize}&sort=id,desc`, {
+  return request(`//api.musixise.com/api/v1/admin/musixisers?page=${params.currentPage}&size=${params.pageSize}`, {
     headers,
     body: {
       ...tokenObj,
