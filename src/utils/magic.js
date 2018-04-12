@@ -23,6 +23,10 @@ const mbox = new Tone.MonoSynth({
 
 let music;
 
+function buildEZModel(items, workId) {
+  // 针对死音片，即全白键上升18音片 的计算方法
+  return false;
+}
 export function buildModel(items, workId) {
   console.log('== Enter RealMagic ==');
   // console.log(JSON.stringify(items));
@@ -121,12 +125,13 @@ export function buildModel(items, workId) {
     return rotate(90, [1, 0, 4 * noteSec * RATIO / 15], cylinder({
       h: 1,
       r: DOT_WIDTH / 2,
-      center: true
+      center: true,
+      fn:100,
     })).translate([sin(360 * noteSec * RATIO / 15) * OUTER_RADIUS, -cos(360 * noteSec * RATIO / 15) * OUTER_RADIUS, -9.95 + OFFSET + 0.4 + (noteNo - 1) * .9])
   }
 
   function main() {
-    let cylinderBody = difference(cylinder({h: 19.9,r: OUTER_RADIUS,center: true}),cylinder({h: 19.9,r: INNER_RADIUS,center: true}),generatePin(0, -2),generatePin(5, -2),generatePin(10, -2))
+    let cylinderBody = difference(cylinder({h: 19.9,r: OUTER_RADIUS,center: true,fn:150}),cylinder({h: 19.9,r: INNER_RADIUS,center: true,fn:150}),generatePin(0, -2),generatePin(5, -2),generatePin(10, -2))
     let holes = union(${musicboxPins})
     return union(cylinderBody,holes).translate([0, 0, 0]).scale(1);
   }`;
