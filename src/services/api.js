@@ -13,8 +13,8 @@ const tokenObj = {
   access_token: '',
 };
 if (token) {
-  // headers.Authorization = `Bearer ${token}`;
-  tokenObj.access_token = token;
+  headers.Authorization = `${token}`;
+  // tokenObj.access_token = token;
 }
 
 export async function queryProjectNotice() {
@@ -96,14 +96,14 @@ export async function fakeAccountLogin(params) {
     localStorage.setItem('token', newtoken.data.id_token);
     console.log('898989898', newtoken);
     if (newtoken) {
-      // headers.Authorization = `Bearer ${newtoken.id_token}`;
-      tokenObj.access_token = newtoken.data.id_token;
+      headers.Authorization = `${newtoken.id_token}`;
+      // tokenObj.access_token = newtoken.data.id_token;
       /* previous version , called /account */
       // return request('http://api.musixise.com/api/v1/account', {
       //   headers,
       //   body: {},
       // });
-      return request(`http://api.musixise.com/api/v1/user/getInfo?access_token=${tokenObj.access_token}`, {
+      return request('http://api.musixise.com/api/v1/user/getInfo', {
         headers,
       });
     } else { // TODO ,这块的登录键一直在转，草
