@@ -18,8 +18,6 @@ export default {
     },
     *fetchCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
-      const auth = localStorage.getItem('antd-pro-authority');
-      console.log('auth', auth);
       yield put({
         type: 'saveCurrentUser',
         payload: response.data,
