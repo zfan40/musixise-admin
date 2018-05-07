@@ -112,8 +112,8 @@ class BasicLayout extends React.PureComponent {
     } else {
       // alert(2);
       // default url direct address
-      return '/list/musixiser-list';
-      // return '/dashboard/analysis';
+      // return '/list/musixiser-list';
+      return '/dashboard/analysis';
     }
     return redirect;
   }

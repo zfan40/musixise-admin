@@ -23,9 +23,40 @@ const mbox = new Tone.MonoSynth({
 
 let music;
 
-function buildEZModel(items, workId) {
+function buildEZModel(tasksObj) {
   // 针对死音片，即全白键上升18音片 的计算方法
-  return false;
+  const EZMachine = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6', 'F6']
+    .map(a => parseInt(Tone.Frequency(a).toFrequency() * 2, 10)); // 18个白音频率
+  const arrayTaskObj = Object.keys(tasksObj);// 作品频率
+  // 确认没有多余音
+  let isEZWhite = true;
+  arrayTaskObj.forEach((note) => {
+    isEZWhite = isEZWhite && EZMachine.contains(note);
+  });
+  if (!isEZWhite) return false;
+  // 确认同音没那么近
+  const timings = Object.values(tasksObj);
+  timings.forEach((timing) => {
+    if (timing.length === 1) {
+      isEZWhite = isEZWhite && true;
+    } else {
+      for (let i = 0; i <= timing.length - 2; i += 1) {
+        if (timing[i + 1] - timing[i] < SAME_NOTE_INTERVAL) {
+          isEZWhite = false;
+          break;
+        }
+      }
+    }
+  });
+  if (!isEZWhite) return false;
+  const musicboxPins = [];
+  // build EZ Model
+  arrayTaskObj.forEach((freq) => {
+    tasksObj[freq].forEach((time) => {
+      musicboxPins.push(`generatePin(${time * 0.75},${EZMachine.indexOf(freq) + 1})`);// 0.75 is *15/20
+    });
+  });
+  return isEZWhite;
 }
 export function buildModel(items, workId) {
   console.log('== Enter RealMagic ==');
@@ -98,13 +129,15 @@ export function buildModel(items, workId) {
   if (machines.length < 18) {
     const lastMachine = machines[machines.length - 1];
     while (machines.length < 18) {
-      machines.push(lastMachine); // make it length of 18
+      // machines.push(lastMachine); // make it length of 18
+      machines.push(0);
     }
     // machines is like ["1046", "1174", "1318", "1318", "1318", "1396", "1567"] of 18 length
   } else if (machines.length > 18) {
     alert('所需音片儿超过18个');
     return false;
   }
+  // TODO:得到从低到高machines后，根据音片的各个齿最低频率平移，占用空的位置呗，此处也会失败。。。
   console.log(machines);
   // then we merge all the tasks
 
