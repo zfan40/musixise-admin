@@ -26,6 +26,10 @@ export default class TableList extends PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'work/fetch',
+      payload: {
+        currentPage: 1,
+        pageSize: 50,
+      },
     });
   }
 
@@ -111,6 +115,10 @@ export default class TableList extends PureComponent {
     }).then(() => {
       dispatch({
         type: 'work/fetch',
+        payload: {
+          currentPage: 1,
+          pageSize: 50,
+        },
       });
     });
   }

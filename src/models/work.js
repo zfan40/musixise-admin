@@ -13,8 +13,15 @@ export default {
   effects: {
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryWork, payload);
-      // 缺少分页信息！
-      const formatterResponse = { list: response, pagination: {} };
+      const { current, total, size, list } = response.data;
+      const formatterResponse = {
+        list,
+        pagination: {
+          current,
+          total,
+          size,
+        },
+      };
       yield put({
         type: 'save',
         payload: formatterResponse,

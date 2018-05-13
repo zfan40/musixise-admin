@@ -96,8 +96,8 @@ class WorkTable extends PureComponent {
       },
       {
         title: '用户',
-        dataIndex: 'owner',
-        render: val => `id:${val.uid},${val.nickName}`,
+        dataIndex: 'userVO',
+        // render: val => `id:${val.uid},${val.nickName}`,
       },
       // {
       //   title: '标题',

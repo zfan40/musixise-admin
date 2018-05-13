@@ -129,8 +129,8 @@ export async function queryNotices() {
   return request('/api/notices');
 }
 
-export async function queryWork() {
-  return request('//api.musixise.com/api/v1/work-lists?page=0&size=20&sort=id,asc', {
+export async function queryWork(params) {
+  return request(`//api.musixise.com/api/v1/admin/works?page=${params.currentPage}&size=${params.pageSize}`, {
     headers,
     body: {
       ...tokenObj,
@@ -139,7 +139,7 @@ export async function queryWork() {
 }
 
 export async function removeWork(params) {
-  return request(`//api.musixise.com/api/v1/work-lists/${params.id}`, {
+  return request(`//api.musixise.com/api/v1/admin/works/${params.id}`, {
     method: 'DELETE',
     headers,
     body: {
@@ -160,7 +160,7 @@ export async function addWork(params) {
 }
 
 export async function getMusixiserById(params) {
-  return request(`//api.musixise.com/api/v1/musixisers/${params.id}`, {
+  return request(`//api.musixise.com/api/v1/admin/musixisers/${params.id}`, {
     headers,
     body: {
       ...tokenObj,
@@ -178,7 +178,7 @@ export async function queryMusixiser(params) {
 }
 
 export async function removeMusixiser(params) {
-  return request(`//api.musixise.com/api/v1/musixisers/${params.id}`, {
+  return request(`//api.musixise.com/api/v1/admin/musixisers/${params.id}`, {
     method: 'DELETE',
     headers,
     body: {
