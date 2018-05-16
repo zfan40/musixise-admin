@@ -23,17 +23,20 @@ const mbox = new Tone.MonoSynth({
 
 let music;
 
-function buildEZModel(tasksObj) {
+function getEasyPins(tasksObj) {
   // 针对死音片，即全白键上升18音片 的计算方法
   const EZMachine = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6', 'F6']
-    .map(a => parseInt(Tone.Frequency(a).toFrequency() * 2, 10)); // 18个白音频率
+    .map(a => `${parseInt(Tone.Frequency(a).toFrequency() * 2, 10)}`); // 18个白音频率
   const arrayTaskObj = Object.keys(tasksObj);// 作品频率
+  console.log(arrayTaskObj);
+  console.log(EZMachine);
   // 确认没有多余音
   let isEZWhite = true;
   arrayTaskObj.forEach((note) => {
-    isEZWhite = isEZWhite && EZMachine.contains(note);
+    isEZWhite = isEZWhite && EZMachine.includes(note);
   });
   if (!isEZWhite) return false;
+  console.log('pass 1');
   // 确认同音没那么近
   const timings = Object.values(tasksObj);
   timings.forEach((timing) => {
@@ -49,6 +52,7 @@ function buildEZModel(tasksObj) {
     }
   });
   if (!isEZWhite) return false;
+
   const musicboxPins = [];
   // build EZ Model
   arrayTaskObj.forEach((freq) => {
@@ -56,20 +60,51 @@ function buildEZModel(tasksObj) {
       musicboxPins.push(`generatePin(${time * 0.75},${EZMachine.indexOf(freq) + 1})`);// 0.75 is *15/20
     });
   });
-  return isEZWhite;
+  return musicboxPins;
 }
 export function buildModel(items, workId) {
   console.log('== Enter RealMagic ==');
   // console.log(JSON.stringify(items));
   const tasksObj = {};
   items.forEach((item) => {
-    //* 2 cuz print mbox need 1 octave higher.
+    // * 2, cuz print mbox need 1 octave higher.
     const itemNoteFreq = parseInt(Tone.Frequency(item.note).toFrequency() * 2, 10);
     if (!tasksObj[itemNoteFreq]) { tasksObj[itemNoteFreq] = []; }
     tasksObj[itemNoteFreq].push(item.time);
   });
   // tasksObj is like {784:[1.0295,1.39,2.6713],659:[2.66],...}
 
+  const musicboxEZPins = getEasyPins(tasksObj);
+  console.log('ez model!!!!!', musicboxEZPins);
+  if (musicboxEZPins) {
+    const script = `
+      //底下低音,上面高音
+    const DOT_WIDTH = 0.6
+    const RATIO = 0.98
+    const OFFSET = 2.2 //1.95 is center
+    const OUTER_RADIUS = 6.6
+    const INNER_RADIUS = 5.9
+    function generatePin(noteSec, noteNo) {
+      return rotate(90, [1, 0, 4 * noteSec * RATIO / 15], cylinder({
+        h: 1,
+        r: DOT_WIDTH / 2,
+        center: true,
+        fn:100,
+      })).translate([sin(360 * noteSec * RATIO / 15) * OUTER_RADIUS, -cos(360 * noteSec * RATIO / 15) * OUTER_RADIUS, -9.95 + OFFSET + 0.4 + (noteNo - 1) * .9])
+    }
+
+    function main() {
+      let cylinderBody = difference(cylinder({h: 19.9,r: OUTER_RADIUS,center: true,fn:150}),cylinder({h: 19.9,r: INNER_RADIUS,center: true,fn:150}),generatePin(0, -2),generatePin(5, -2),generatePin(10, -2))
+      let holes = union(${musicboxEZPins})
+      return union(cylinderBody,holes).translate([0, 0, 0]).scale(1);
+    }`;
+    const params = {};
+    jscad.compile(script, params).then((compiled) => {
+      const outputData = jscad.generateOutput('stlb', compiled);
+      FileSaver.saveAs(outputData, workId ? `${workId}.stl` : 'mb.stl');
+    });
+    return;
+  }
   // then we focus on each task
   const taskTypes = Object.keys(tasksObj); // [659,784,...]  freq array, 排好序的（object.keys）
   const taskTimeArrays = Object.values(tasksObj); // [[2.66]，[1.0295,1.39,2.6713]] 顺序跟上面对应的
@@ -127,7 +162,7 @@ export function buildModel(items, workId) {
     }
   });
   if (machines.length < 18) {
-    const lastMachine = machines[machines.length - 1];
+    // const lastMachine = machines[machines.length - 1];
     while (machines.length < 18) {
       // machines.push(lastMachine); // make it length of 18
       machines.push(0);
