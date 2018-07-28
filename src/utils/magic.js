@@ -1,7 +1,10 @@
+import { notification, Modal } from 'antd';
+
 const Tone = require('tone');
 const jscad = require('@jscad/openjscad');
 // const fs = require('fs');
 const FileSaver = require('file-saver');
+
 
 const SAME_NOTE_INTERVAL = 1; // 同一个音不能相距小于1秒，不然音片打击出问题
 
@@ -174,6 +177,14 @@ export function buildModel(items, workId) {
   }
   // TODO:得到从低到高machines后，根据音片的各个齿最低频率平移，占用空的位置呗，此处也会失败。。。
   console.log(machines);
+  // notification.open({
+  //   message: `No.${workId}: `,
+  //   description: JSON.stringify(machines),
+  // });
+  Modal.info({
+    title: `No.${workId}: `,
+    content: JSON.stringify(machines),
+  });
   // then we merge all the tasks
 
   // test1: [[1],[1,2,1]] => [1,2,3,2]
@@ -199,7 +210,7 @@ export function buildModel(items, workId) {
   }
 
   function main() {
-    let cylinderBody = difference(cylinder({h: 19.9,r: OUTER_RADIUS,center: true,fn:150}),cylinder({h: 19.9,r: INNER_RADIUS,center: true,fn:150}),generatePin(0, -2),generatePin(5, -2),generatePin(10, -2))
+    let cylinderBody = difference(cylinder({h: 19.9,r: OUTER_RADIUS,center: true,fn:100}),cylinder({h: 19.9,r: INNER_RADIUS,center: true,fn:100}),generatePin(0, -2),generatePin(5, -2),generatePin(10, -2))
     let holes = union(${musicboxPins})
     return union(cylinderBody,holes).translate([0, 0, 0]).scale(1);
   }`;
