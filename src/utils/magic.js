@@ -201,7 +201,7 @@ export function buildModel(items, workId) {
   const OUTER_RADIUS = 6.6
   const INNER_RADIUS = 5.9
   function generatePin(noteSec, noteNo) {
-    return rotate(90, [1, 0, 4 * noteSec * RATIO / 15], cylinder({
+    return rotate([90, 0, 360 * noteSec * RATIO / 15], cylinder({
       h: 1,
       r: DOT_WIDTH / 2,
       center: true,
@@ -214,7 +214,7 @@ export function buildModel(items, workId) {
     let holes = union(${musicboxPins})
     return union(cylinderBody,holes).translate([0, 0, 0]).scale(1);
   }`;
-  // console.log(script);
+  console.log(script);
   const params = {};
   jscad.compile(script, params).then((compiled) => {
   // generate final output data, choosing your prefered format
