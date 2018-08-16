@@ -14,7 +14,7 @@ const tokenObj = {
 };
 if (token) {
   headers.Authorization = `${token}`;
-  tokenObj.access_token = token;
+  // tokenObj.access_token = token;
 }
 
 export async function queryProjectNotice() {
@@ -85,7 +85,7 @@ export async function fakeAccountLogin(params) {
   // params貌似要加一个rememberMe:true,
   alert(JSON.stringify(params));
   try {
-    const newtoken = await request('http://api.musixise.com/api/v1/user/authenticate', {
+    const newtoken = await request('//api.musixise.com/api/v1/user/authenticate', {
       method: 'POST',
       headers,
       body: {
@@ -99,11 +99,11 @@ export async function fakeAccountLogin(params) {
       headers.Authorization = `${newtoken.id_token}`;
       // tokenObj.access_token = newtoken.data.id_token;
       /* previous version , called /account */
-      // return request('http://api.musixise.com/api/v1/account', {
+      // return request('//api.musixise.com/api/v1/account', {
       //   headers,
       //   body: {},
       // });
-      return request('http://api.musixise.com/api/v1/user/getInfo', {
+      return request('//api.musixise.com/api/v1/user/getInfo', {
         headers,
       });
     } else { // TODO ,这块的登录键一直在转，草
@@ -130,13 +130,13 @@ export async function queryNotices() {
 }
 
 export async function queryWork(params) {
-  return request(`http://api.musixise.com/api/v1/admin/works?page=${params.currentPage}&size=${params.pageSize}`, {
+  return request(`//api.musixise.com/api/v1/admin/works?page=${params.currentPage}&size=${params.pageSize}`, {
     headers,
   });
 }
 
 export async function removeWork(params) {
-  return request(`http://api.musixise.com/api/v1/admin/works/${params.id}`, {
+  return request(`//api.musixise.com/api/v1/admin/works/${params.id}`, {
     method: 'DELETE',
     headers,
     body: {
