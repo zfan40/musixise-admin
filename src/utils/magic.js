@@ -8,20 +8,36 @@ const FileSaver = require('file-saver');
 
 const SAME_NOTE_INTERVAL = 1; // 同一个音不能相距小于1秒，不然音片打击出问题
 
-const mbox = new Tone.MonoSynth({
-  volume: -10,
-  envelope: {
-    attack: 0.1,
-    decay: 0.3,
-    release: 2,
-  },
-  filterEnvelope: {
-    attack: 0.001,
-    decay: 0.01,
-    sustain: 0.5,
-    baseFrequency: 200,
-    octaves: 2.6,
-  },
+// const mbox = new Tone.MonoSynth({
+//   volume: -10,
+//   envelope: {
+//     attack: 0.1,
+//     decay: 0.3,
+//     release: 2,
+//   },
+//   filterEnvelope: {
+//     attack: 0.001,
+//     decay: 0.01,
+//     sustain: 0.5,
+//     baseFrequency: 200,
+//     octaves: 2.6,
+//   },
+// }).toMaster();
+
+const mbox = new Tone.Sampler({
+  B3: 'B3.[mp3|ogg]',
+  E4: 'E4.[mp3|ogg]',
+  G4: 'G4.[mp3|ogg]',
+  B4: 'B4.[mp3|ogg]',
+  'C#5': 'Cs5.[mp3|ogg]',
+  E5: 'E5.[mp3|ogg]',
+  G5: 'G5.[mp3|ogg]',
+  B5: 'B5.[mp3|ogg]',
+  'C#6': 'Cs6.[mp3|ogg]',
+}, {
+  release: 1,
+  // baseUrl: '/static/audio/mbox/',
+  baseUrl: '//cnbj1.fds.api.xiaomi.com/mbox/audio/mbox/',
 }).toMaster();
 
 let music;
@@ -193,17 +209,37 @@ export function buildModel(items, workId) {
   let finalTimings = taskTimeArrays.reduce((a, b) => a.concat(b)); // just flatten it
   finalTimings = finalTimings.map(item => (item * 15) / 20); // normalize from 20s to 15s
   const musicboxPins = finalBins.map((bin, index) => `generatePin(${finalTimings[index]},${bin})`);
+  // const script = `
+  //   //底下低音,上面高音
+  // const DOT_WIDTH = 0.3
+  // const RATIO = 0.98
+  // const OFFSET = 2.2 //1.95 is center
+  // const OUTER_RADIUS = 6.6
+  // const INNER_RADIUS = 5.9
+  // function generatePin(noteSec, noteNo) {
+  //   return rotate([90, 0, 360 * noteSec * RATIO / 15], cylinder({
+  //     h: 1,
+  //     r: DOT_WIDTH / 2,
+  //     center: true,
+  //     fn:100,
+  //   })).translate([sin(360 * noteSec * RATIO / 15) * OUTER_RADIUS, -cos(360 * noteSec * RATIO / 15) * OUTER_RADIUS, -9.95 + OFFSET + 0.4 + (noteNo - 1) * .9])
+  // }
+  //
+  // function main() {
+  //   let cylinderBody = difference(cylinder({h: 19.9,r: OUTER_RADIUS,center: true,fn:100}),cylinder({h: 19.9,r: INNER_RADIUS,center: true,fn:100}),generatePin(0, -2),generatePin(5, -2),generatePin(10, -2))
+  //   let holes = union(${musicboxPins})
+  //   return union(cylinderBody,holes).translate([0, 0, 0]).scale(1);
+  // }`;
   const script = `
     //底下低音,上面高音
-  const DOT_WIDTH = 0.6
+  const DOT_WIDTH = 0.3
   const RATIO = 0.98
   const OFFSET = 2.2 //1.95 is center
   const OUTER_RADIUS = 6.6
   const INNER_RADIUS = 5.9
   function generatePin(noteSec, noteNo) {
-    return rotate([90, 0, 360 * noteSec * RATIO / 15], cylinder({
-      h: 1,
-      r: DOT_WIDTH / 2,
+    return rotate([90, 0, (360 * noteSec * RATIO / 15)-30], cube({
+      size:[DOT_WIDTH,DOT_WIDTH,1],
       center: true,
       fn:100,
     })).translate([sin(360 * noteSec * RATIO / 15) * OUTER_RADIUS, -cos(360 * noteSec * RATIO / 15) * OUTER_RADIUS, -9.95 + OFFSET + 0.4 + (noteNo - 1) * .9])

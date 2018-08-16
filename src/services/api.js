@@ -14,7 +14,7 @@ const tokenObj = {
 };
 if (token) {
   headers.Authorization = `${token}`;
-  // tokenObj.access_token = token;
+  tokenObj.access_token = token;
 }
 
 export async function queryProjectNotice() {
@@ -130,16 +130,13 @@ export async function queryNotices() {
 }
 
 export async function queryWork(params) {
-  return request(`//api.musixise.com/api/v1/admin/works?page=${params.currentPage}&size=${params.pageSize}`, {
+  return request(`http://api.musixise.com/api/v1/admin/works?page=${params.currentPage}&size=${params.pageSize}`, {
     headers,
-    body: {
-      ...tokenObj,
-    },
   });
 }
 
 export async function removeWork(params) {
-  return request(`//api.musixise.com/api/v1/admin/works/${params.id}`, {
+  return request(`http://api.musixise.com/api/v1/admin/works/${params.id}`, {
     method: 'DELETE',
     headers,
     body: {
@@ -162,18 +159,15 @@ export async function addWork(params) {
 export async function getMusixiserById(params) {
   return request(`//api.musixise.com/api/v1/admin/musixisers/${params.id}`, {
     headers,
-    body: {
-      ...tokenObj,
-    },
   });
 }
 
 export async function queryMusixiser(params) {
   return request(`//api.musixise.com/api/v1/admin/musixisers?page=${params.currentPage}&size=${params.pageSize}`, {
     headers,
-    body: {
-      ...tokenObj,
-    },
+    // body: {
+    //   ...tokenObj,
+    // },
   });
 }
 
