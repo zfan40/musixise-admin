@@ -65,16 +65,17 @@ export default class LoginPage extends Component {
               for (let m = 0; m <= 2; m += 1) {
                 for (let n = 0; n <= 2; n += 1) {
                   for (let k = 0; k <= 6; k += 1) {
-                  // buildModelWithParam(JSON.parse(request.responseText), id, 0.3, 2.2, 6.6, 5.9);
-                  buildModelWithParam(
-                    JSON.parse(request.responseText),
-                    id,
-                    DOT_WIDTH[i],
-                    OFFSET[j],
-                    OUTER_RADIUS[m],
-                    INNER_RADIUS[n],
-                    DOT_HEIGHT[k],
-                  );
+                    // buildModelWithParam(JSON.parse(request.responseText), id, 0.3, 2.2, 6.6, 5.9);
+                    buildModelWithParam(
+                      JSON.parse(request.responseText),
+                      id,
+                      DOT_WIDTH[i],
+                      OFFSET[j],
+                      OUTER_RADIUS[m],
+                      INNER_RADIUS[n],
+                      DOT_HEIGHT[k]
+                    );
+                  }
                 }
               }
             }
