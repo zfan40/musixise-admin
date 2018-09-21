@@ -4,7 +4,7 @@ import { Link } from 'dva/router';
 import { Checkbox, Alert, Icon } from 'antd';
 import Login from '../../components/Login';
 import styles from './Login.less';
-import { buildModel, preview } from '../../utils/magic';
+import { buildModel, buildModelWithParam, preview } from '../../utils/magic';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
 
@@ -42,24 +42,46 @@ export default class LoginPage extends Component {
     });
   };
 
-  renderMessage = (content) => {
-    return <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />;
-  };
   build124 = () => {
+    // TODO replace url address
     const url = '//cdn/124.txt';
     const id = 124;
     const request = new XMLHttpRequest();
-    alert(4);
     request.open('GET', url, true);
     request.send(null);
     request.onreadystatechange = () => {
       if (request.readyState === 4 && request.status === 200) {
         const type = request.getResponseHeader('Content-Type');
         if (type.indexOf('text') !== -1) {
-          buildModel(JSON.parse(request.responseText), id);
+          const DOT_WIDTH = [0.4, 0.5, 0.6];
+          const OFFSET = [2.1, 2.2, 2.3];
+          const OUTER_RADIUS = [6.5, 6.6, 6.7];
+          const INNER_RADIUS = [5.8, 5.9, 6.0];
+          // TODO: 小凸点的高度也是一个。。。。 const DOT_HEIGHT = 目前写死为1
+          // TODO:loop it with for let
+          for (let i = 0; i <= 2; i += 1) {
+            for (let j = 0; j <= 2; j += 1) {
+              for (let m = 0; m <= 2; m += 1) {
+                for (let n = 0; n <= 2; n += 1) {
+                  // buildModelWithParam(JSON.parse(request.responseText), id, 0.3, 2.2, 6.6, 5.9);
+                  buildModelWithParam(
+                    JSON.parse(request.responseText),
+                    id,
+                    DOT_WIDTH[i],
+                    OFFSET[j],
+                    OUTER_RADIUS[m],
+                    INNER_RADIUS[n]
+                  );
+                }
+              }
+            }
+          }
         }
       }
     };
+  };
+  renderMessage = (content) => {
+    return <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />;
   };
   render() {
     const { login, submitting } = this.props;
