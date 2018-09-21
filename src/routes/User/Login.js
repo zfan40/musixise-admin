@@ -57,12 +57,14 @@ export default class LoginPage extends Component {
           const OFFSET = [2.1, 2.2, 2.3];
           const OUTER_RADIUS = [6.5, 6.6, 6.7];
           const INNER_RADIUS = [5.8, 5.9, 6.0];
+          const DOT_HEIGHT = [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1];
           // TODO: 小凸点的高度也是一个。。。。 const DOT_HEIGHT = 目前写死为1
           // TODO:loop it with for let
           for (let i = 0; i <= 2; i += 1) {
             for (let j = 0; j <= 2; j += 1) {
               for (let m = 0; m <= 2; m += 1) {
                 for (let n = 0; n <= 2; n += 1) {
+                  for (let k = 0; k <= 6; k += 1) {
                   // buildModelWithParam(JSON.parse(request.responseText), id, 0.3, 2.2, 6.6, 5.9);
                   buildModelWithParam(
                     JSON.parse(request.responseText),
@@ -70,7 +72,8 @@ export default class LoginPage extends Component {
                     DOT_WIDTH[i],
                     OFFSET[j],
                     OUTER_RADIUS[m],
-                    INNER_RADIUS[n]
+                    INNER_RADIUS[n],
+                    DOT_HEIGHT[k],
                   );
                 }
               }

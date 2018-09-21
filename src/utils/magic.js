@@ -286,7 +286,15 @@ export function buildModel(items, workId) {
   });
 }
 
-export function buildModelWithParam(items, workId, DOT_WIDTH, OFFSET, OUTER_RADIUS, INNER_RADIUS) {
+export function buildModelWithParam(
+  items,
+  workId,
+  DOT_WIDTH,
+  OFFSET,
+  OUTER_RADIUS,
+  INNER_RADIUS,
+  DOT_HEIGHT
+) {
   console.log('== Enter RealMagic ==');
   const tasksObj = {};
   items.forEach((item) => {
@@ -392,9 +400,10 @@ export function buildModelWithParam(items, workId, DOT_WIDTH, OFFSET, OUTER_RADI
   const OFFSET = ${OFFSET} //1.95 is center
   const OUTER_RADIUS = ${OUTER_RADIUS}
   const INNER_RADIUS = ${INNER_RADIUS}
+  const DOT_HEIGHT = ${DOT_HEIGHT}
   function generatePin(noteSec, noteNo) {
     return rotate([90, 0, (360 * noteSec * RATIO / 15)], cube({
-      size:[DOT_WIDTH,DOT_WIDTH,1],
+      size:[DOT_WIDTH,DOT_WIDTH,DOT_HEIGHT],
       center: true,
       fn:100,
     })).translate([sin(360 * noteSec * RATIO / 15) * OUTER_RADIUS, -cos(360 * noteSec * RATIO / 15) * OUTER_RADIUS, -9.95 + OFFSET + 0.4 + (noteNo - 1) * .9])
