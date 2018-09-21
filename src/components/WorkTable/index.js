@@ -32,7 +32,7 @@ class WorkTable extends PureComponent {
         }
       }
     };
-  }
+  };
   buildModelFromWorkUrl = (url, id) => {
     const request = new XMLHttpRequest();
     request.open('GET', url, true);
@@ -45,12 +45,12 @@ class WorkTable extends PureComponent {
         }
       }
     };
-  }
+  };
   deleteWorkById = (id) => {
     if (this.props.onDeleteWork) {
       this.props.onDeleteWork(id);
     }
-  }
+  };
   handleRowSelectChange = (selectedRowKeys, selectedRows) => {
     const totalCallNo = selectedRows.reduce((sum, val) => {
       return sum + parseFloat(val.callNo, 10);
@@ -61,15 +61,15 @@ class WorkTable extends PureComponent {
     }
 
     this.setState({ selectedRowKeys, totalCallNo });
-  }
+  };
 
   handleTableChange = (pagination, filters, sorter) => {
     this.props.onChange(pagination, filters, sorter);
-  }
+  };
 
   cleanSelectedKeys = () => {
     this.handleRowSelectChange([], []);
-  }
+  };
 
   render() {
     const { selectedRowKeys, totalCallNo } = this.state;
@@ -146,7 +146,9 @@ class WorkTable extends PureComponent {
             <Divider type="vertical" />
             <a onClick={() => this.buildModelFromWorkUrl(a, b.id)}>生产模型</a>
             <Divider type="vertical" />
-            <Popconfirm title="确认删除？" onConfirm={() => this.deleteWorkById(b.id)}><a>删除</a></Popconfirm>
+            <Popconfirm title="确认删除？" onConfirm={() => this.deleteWorkById(b.id)}>
+              <a>删除</a>
+            </Popconfirm>
           </Fragment>
         ),
       },
@@ -170,13 +172,15 @@ class WorkTable extends PureComponent {
       <div className={styles.standardTable}>
         <div className={styles.tableAlert}>
           <Alert
-            message={(
+            message={
               <div>
                 已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
                 服务调用总计 <span style={{ fontWeight: 600 }}>{totalCallNo}</span> 万
-                <a onClick={this.cleanSelectedKeys} style={{ marginLeft: 24 }}>清空</a>
+                <a onClick={this.cleanSelectedKeys} style={{ marginLeft: 24 }}>
+                  清空
+                </a>
               </div>
-            )}
+            }
             type="info"
             showIcon
           />

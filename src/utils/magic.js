@@ -5,7 +5,6 @@ const jscad = require('@jscad/openjscad');
 // const fs = require('fs');
 const FileSaver = require('file-saver');
 
-
 const SAME_NOTE_INTERVAL = 1; // 同一个音不能相距小于1秒，不然音片打击出问题
 
 // const mbox = new Tone.MonoSynth({
@@ -24,29 +23,50 @@ const SAME_NOTE_INTERVAL = 1; // 同一个音不能相距小于1秒，不然音�
 //   },
 // }).toMaster();
 
-const mbox = new Tone.Sampler({
-  B3: 'B3.[mp3|ogg]',
-  E4: 'E4.[mp3|ogg]',
-  G4: 'G4.[mp3|ogg]',
-  B4: 'B4.[mp3|ogg]',
-  'C#5': 'Cs5.[mp3|ogg]',
-  E5: 'E5.[mp3|ogg]',
-  G5: 'G5.[mp3|ogg]',
-  B5: 'B5.[mp3|ogg]',
-  'C#6': 'Cs6.[mp3|ogg]',
-}, {
-  release: 1,
-  // baseUrl: '/static/audio/mbox/',
-  baseUrl: '//cnbj1.fds.api.xiaomi.com/mbox/audio/mbox/',
-}).toMaster();
+const mbox = new Tone.Sampler(
+  {
+    B3: 'B3.[mp3|ogg]',
+    E4: 'E4.[mp3|ogg]',
+    G4: 'G4.[mp3|ogg]',
+    B4: 'B4.[mp3|ogg]',
+    'C#5': 'Cs5.[mp3|ogg]',
+    E5: 'E5.[mp3|ogg]',
+    G5: 'G5.[mp3|ogg]',
+    B5: 'B5.[mp3|ogg]',
+    'C#6': 'Cs6.[mp3|ogg]',
+  },
+  {
+    release: 1,
+    // baseUrl: '/static/audio/mbox/',
+    baseUrl: '//cnbj1.fds.api.xiaomi.com/mbox/audio/mbox/',
+  }
+).toMaster();
 
 let music;
 
 function getEasyPins(tasksObj) {
   // 针对死音片，即全白键上升18音片 的计算方法
-  const EZMachine = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6', 'F6']
-    .map(a => `${parseInt(Tone.Frequency(a).toFrequency() * 2, 10)}`); // 18个白音频率
-  const arrayTaskObj = Object.keys(tasksObj);// 作品频率
+  const EZMachine = [
+    'C4',
+    'D4',
+    'E4',
+    'F4',
+    'G4',
+    'A4',
+    'B4',
+    'C5',
+    'D5',
+    'E5',
+    'F5',
+    'G5',
+    'A5',
+    'B5',
+    'C6',
+    'D6',
+    'E6',
+    'F6',
+  ].map(a => `${parseInt(Tone.Frequency(a).toFrequency() * 2, 10)}`); // 18个白音频率
+  const arrayTaskObj = Object.keys(tasksObj); // 作品频率
   console.log(arrayTaskObj);
   console.log(EZMachine);
   // 确认没有多余音
@@ -76,7 +96,7 @@ function getEasyPins(tasksObj) {
   // build EZ Model
   arrayTaskObj.forEach((freq) => {
     tasksObj[freq].forEach((time) => {
-      musicboxPins.push(`generatePin(${time * 0.75},${EZMachine.indexOf(freq) + 1})`);// 0.75 is *15/20
+      musicboxPins.push(`generatePin(${time * 0.75},${EZMachine.indexOf(freq) + 1})`); // 0.75 is *15/20
     });
   });
   return musicboxPins;
@@ -88,7 +108,9 @@ export function buildModel(items, workId) {
   items.forEach((item) => {
     // * 2, cuz print mbox need 1 octave higher.
     const itemNoteFreq = parseInt(Tone.Frequency(item.note).toFrequency() * 2, 10);
-    if (!tasksObj[itemNoteFreq]) { tasksObj[itemNoteFreq] = []; }
+    if (!tasksObj[itemNoteFreq]) {
+      tasksObj[itemNoteFreq] = [];
+    }
     tasksObj[itemNoteFreq].push(item.time);
   });
   // tasksObj is like {784:[1.0295,1.39,2.6713],659:[2.66],...}
@@ -145,10 +167,13 @@ export function buildModel(items, workId) {
         final.push(1); // 给第1组的第一个任务分配第一个机器
       } else {
         let counter = j;
-        while (counter >= 1 && !allPreviousOccupied) { // TODO: -1 or 0
+        while (counter >= 1 && !allPreviousOccupied) {
+          // TODO: -1 or 0
           counter -= 1;
-          if ((time - timeArray[counter] >= SAME_NOTE_INTERVAL)
-          && test.indexOf(final[counter]) === -1) {
+          if (
+            time - timeArray[counter] >= SAME_NOTE_INTERVAL &&
+            test.indexOf(final[counter]) === -1
+          ) {
             final.push(final[counter]);
             successFound = true;
             break;
@@ -207,7 +232,7 @@ export function buildModel(items, workId) {
   // test2: [[1,2,1],[1,2,3]] => [1,2,1,3,4,5]
   const finalBins = groups.reduce((a, b) => a.concat(b.map(item => item + Math.max(...a))));
   let finalTimings = taskTimeArrays.reduce((a, b) => a.concat(b)); // just flatten it
-  finalTimings = finalTimings.map(item => (item * 15) / 20); // normalize from 20s to 15s
+  finalTimings = finalTimings.map(item => item * 15 / 20); // normalize from 20s to 15s
   const musicboxPins = finalBins.map((bin, index) => `generatePin(${finalTimings[index]},${bin})`);
   // const script = `
   //   //底下低音,上面高音
@@ -253,7 +278,7 @@ export function buildModel(items, workId) {
   console.log(script);
   const params = {};
   jscad.compile(script, params).then((compiled) => {
-  // generate final output data, choosing your prefered format
+    // generate final output data, choosing your prefered format
     const outputData = jscad.generateOutput('stlb', compiled);
     // hurray ,we can now write an stl file from our OpenJsCad script!
     FileSaver.saveAs(outputData, workId ? `${workId}.stl` : 'mb.stl');
@@ -264,9 +289,9 @@ export function preview(items) {
   console.log('current state', Tone.Transport.state);
   if (Tone.Transport.state === 'stopped') {
     if (music) music.dispose();
-    music = new Tone.Part(((time, value) => {
+    music = new Tone.Part((time, value) => {
       mbox.triggerAttackRelease(value.note, '8n', time);
-    }), items).start(0, 0);
+    }, items).start(0, 0);
     music.loop = true;
     music.loopEnd = 20; // 20s一个循环
     Tone.Transport.start('+0.01', 0);
