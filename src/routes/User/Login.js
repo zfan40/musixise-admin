@@ -44,7 +44,7 @@ export default class LoginPage extends Component {
 
   build124 = () => {
     // TODO replace url address
-    const url = '//cdn/124.txt';
+    const url = 'http://oiqvdjk3s.bkt.clouddn.com/AhA4dSmF_test.txt';
     const id = 124;
     const request = new XMLHttpRequest();
     request.open('GET', url, true);
@@ -60,26 +60,35 @@ export default class LoginPage extends Component {
           const DOT_HEIGHT = [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1];
           // TODO: 小凸点的高度也是一个。。。。 const DOT_HEIGHT = 目前写死为1
           // TODO:loop it with for let
-          for (let i = 0; i <= 2; i += 1) {
-            for (let j = 0; j <= 2; j += 1) {
-              for (let m = 0; m <= 2; m += 1) {
-                for (let n = 0; n <= 2; n += 1) {
-                  for (let k = 0; k <= 6; k += 1) {
-                    // buildModelWithParam(JSON.parse(request.responseText), id, 0.3, 2.2, 6.6, 5.9);
-                    buildModelWithParam(
-                      JSON.parse(request.responseText),
-                      id,
-                      DOT_WIDTH[i],
-                      OFFSET[j],
-                      OUTER_RADIUS[m],
-                      INNER_RADIUS[n],
-                      DOT_HEIGHT[k]
-                    );
-                  }
-                }
-              }
-            }
-          }
+          // for (let i = 0; i <= 2; i += 1) {
+          //   for (let j = 0; j <= 2; j += 1) {
+          //     for (let m = 0; m <= 2; m += 1) {
+          //       for (let n = 0; n <= 2; n += 1) {
+          //         for (let k = 0; k <= 6; k += 1) {
+          //           // buildModelWithParam(JSON.parse(request.responseText), id, 0.3, 2.2, 6.6, 5.9);
+          //           buildModelWithParam(
+          //             JSON.parse(request.responseText),
+          //             id,
+          //             DOT_WIDTH[i],
+          //             OFFSET[j],
+          //             OUTER_RADIUS[m],
+          //             INNER_RADIUS[n],
+          //             DOT_HEIGHT[k]
+          //           );
+          //         }
+          //       }
+          //     }
+          //   }
+          // }
+          buildModelWithParam(
+            JSON.parse(request.responseText),
+            id,
+            DOT_WIDTH[0],
+            OFFSET[0],
+            OUTER_RADIUS[0],
+            INNER_RADIUS[0],
+            DOT_HEIGHT[0]
+          );
         }
       }
     };
