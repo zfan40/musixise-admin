@@ -1,8 +1,6 @@
-import {
-  stringify,
-} from 'qs';
+import { stringify } from 'qs';
 import request from '../utils/request';
-
+// 101.200.212.87:8082 <=> api.musixise.com
 const headers = {
   'Access-Control-Allow-Origin': '*',
   Accept: 'application/json',
@@ -85,7 +83,7 @@ export async function fakeAccountLogin(params) {
   // params貌似要加一个rememberMe:true,
   alert(JSON.stringify(params));
   try {
-    const newtoken = await request('//api.musixise.com/api/v1/user/authenticate', {
+    const newtoken = await request('//101.200.212.87:8082/api/v1/user/authenticate', {
       method: 'POST',
       headers,
       body: {
@@ -99,14 +97,15 @@ export async function fakeAccountLogin(params) {
       headers.Authorization = `${newtoken.id_token}`;
       // tokenObj.access_token = newtoken.data.id_token;
       /* previous version , called /account */
-      // return request('//api.musixise.com/api/v1/account', {
+      // return request('//101.200.212.87:8082/api/v1/account', {
       //   headers,
       //   body: {},
       // });
-      return request('//api.musixise.com/api/v1/user/getInfo', {
+      return request('//101.200.212.87:8082/api/v1/user/getInfo', {
         headers,
       });
-    } else { // TODO ,这块的登录键一直在转，草
+    } else {
+      // TODO ,这块的登录键一直在转，草
       //
     }
   } catch (e) {
@@ -130,13 +129,16 @@ export async function queryNotices() {
 }
 
 export async function queryWork(params) {
-  return request(`//api.musixise.com/api/v1/admin/works?page=${params.currentPage}&size=${params.pageSize}`, {
-    headers,
-  });
+  return request(
+    `//101.200.212.87:8082/api/v1/admin/works?page=${params.currentPage}&size=${params.pageSize}`,
+    {
+      headers,
+    }
+  );
 }
 
 export async function removeWork(params) {
-  return request(`//api.musixise.com/api/v1/admin/works/${params.id}`, {
+  return request(`//101.200.212.87:8082/api/v1/admin/works/${params.id}`, {
     method: 'DELETE',
     headers,
     body: {
@@ -157,22 +159,27 @@ export async function addWork(params) {
 }
 
 export async function getMusixiserById(params) {
-  return request(`//api.musixise.com/api/v1/admin/musixisers/${params.id}`, {
+  return request(`//101.200.212.87:8082/api/v1/admin/musixisers/${params.id}`, {
     headers,
   });
 }
 
 export async function queryMusixiser(params) {
-  return request(`//api.musixise.com/api/v1/admin/musixisers?page=${params.currentPage}&size=${params.pageSize}`, {
-    headers,
-    // body: {
-    //   ...tokenObj,
-    // },
-  });
+  return request(
+    `//101.200.212.87:8082/api/v1/admin/musixisers?page=${params.currentPage}&size=${
+      params.pageSize
+    }`,
+    {
+      headers,
+      // body: {
+      //   ...tokenObj,
+      // },
+    }
+  );
 }
 
 export async function removeMusixiser(params) {
-  return request(`//api.musixise.com/api/v1/admin/musixisers/${params.id}`, {
+  return request(`//101.200.212.87:8082/api/v1/admin/musixisers/${params.id}`, {
     method: 'DELETE',
     headers,
     body: {
@@ -184,7 +191,7 @@ export async function removeMusixiser(params) {
 }
 export async function updateMusixiser(params) {
   // TODO
-  // return request(`//api.musixise.com/api/v1/musixisers/${params.id}`, {
+  // return request(`//101.200.212.87:8082/api/v1/musixisers/${params.id}`, {
   //   method: 'POST',
   //   headers,
   //   body: {

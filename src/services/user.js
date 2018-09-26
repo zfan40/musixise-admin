@@ -15,7 +15,8 @@ export async function query() {
 }
 
 export async function queryCurrent() {
-  return request('http://api.musixise.com/api/v1/user/getInfo', { // TODO: 貌似格式不一样
+  return request('http://101.200.212.87:8082/api/v1/user/getInfo', {
+    // TODO: 貌似格式不一样
     headers,
   });
   // return request('/api/currentUser', { headers }); // this is mock

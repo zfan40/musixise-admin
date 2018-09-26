@@ -54,28 +54,77 @@ export default class LoginPage extends Component {
         const type = request.getResponseHeader('Content-Type');
         if (type.indexOf('text') !== -1) {
           const DOT_WIDTH = [0.6, 0.5, 0.5, 0.6, 0.4];
-          //const OFFSET = [2.1, 2.2, 2.3];
-          const OUTER_RADIUS = [6.6, 6.4, 6.5, 6.6, 6.4, 6.4, 6.6, 6.6, 6.4, 6.5,
-          6.6, 6.4, 6.4, 6.5, 6.6, 6.4, 6.5, 6.6, 6.6, 6.4, 6.5, 6.6, 6.4, 6.4, 6.6];
-          const INNER_RADIUS = [5.7, 5.7, 5.8, 5.9, 5.9, 5.7, 5.9, 5.7, 5.9, 5.8,
-          5.9, 5.9, 5.7, 5.8, 5.7, 5.9, 5.8, 5.9, 5.7, 5.7, 5.8, 5.7, 5.9, 5.7, 5.9];
+          // const OFFSET = [2.1, 2.2, 2.3];
+          const OUTER_RADIUS = [
+            6.6,
+            6.4,
+            6.5,
+            6.6,
+            6.4,
+            6.4,
+            6.6,
+            6.6,
+            6.4,
+            6.5,
+            6.6,
+            6.4,
+            6.4,
+            6.5,
+            6.6,
+            6.4,
+            6.5,
+            6.6,
+            6.6,
+            6.4,
+            6.5,
+            6.6,
+            6.4,
+            6.4,
+            6.6,
+          ];
+          const INNER_RADIUS = [
+            5.7,
+            5.7,
+            5.8,
+            5.9,
+            5.9,
+            5.7,
+            5.9,
+            5.7,
+            5.9,
+            5.8,
+            5.9,
+            5.9,
+            5.7,
+            5.8,
+            5.7,
+            5.9,
+            5.8,
+            5.9,
+            5.7,
+            5.7,
+            5.8,
+            5.7,
+            5.9,
+            5.7,
+            5.9,
+          ];
           const DOT_HEIGHT = [0.9, 0.7, 0.8, 0.6, 1];
           // TODO:loop it with for let
-          let m=0;
-
+          // const m = 0;
           for (let i = 0; i < 5; i += 1) {
             for (let j = 0; j < 5; j += 1) {
-                  // buildModelWithParam(JSON.parse(request.responseText), id, 0.3, 2.2, 6.6, 5.9);
-                  buildModelWithParam(
-                    JSON.parse(request.responseText),
-                    id,
-                    DOT_WIDTH[j],
-                    2.2,
-                    OUTER_RADIUS[i*5+j],
-                    INNER_RADIUS[i*5+j],
-                    DOT_HEIGHT[i]
-                  );
-                  console.log(i*5+j);
+              // buildModelWithParam(JSON.parse(request.responseText), id, 0.3, 2.2, 6.6, 5.9);
+              buildModelWithParam(
+                JSON.parse(request.responseText),
+                `${i}-${j}`,
+                DOT_WIDTH[j],
+                2.2,
+                OUTER_RADIUS[i * 5 + j],
+                INNER_RADIUS[i * 5 + j],
+                DOT_HEIGHT[i]
+              );
+              console.log(i * 5 + j);
             }
           }
           // buildModelWithParam(
