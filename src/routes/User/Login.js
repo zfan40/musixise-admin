@@ -53,42 +53,40 @@ export default class LoginPage extends Component {
       if (request.readyState === 4 && request.status === 200) {
         const type = request.getResponseHeader('Content-Type');
         if (type.indexOf('text') !== -1) {
-          const DOT_WIDTH = [0.4, 0.5, 0.6];
-          const OFFSET = [2.1, 2.2, 2.3];
-          const OUTER_RADIUS = [6.5, 6.6, 6.7];
-          const INNER_RADIUS = [5.8, 5.9, 6.0];
-          const DOT_HEIGHT = [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1];
-          // TODO: 小凸点的高度也是一个。。。。 const DOT_HEIGHT = 目前写死为1
+          const DOT_WIDTH = [0.6, 0.5, 0.5, 0.6, 0.4];
+          //const OFFSET = [2.1, 2.2, 2.3];
+          const OUTER_RADIUS = [6.6, 6.4, 6.5, 6.6, 6.4, 6.4, 6.6, 6.6, 6.4, 6.5,
+          6.6, 6.4, 6.4, 6.5, 6.6, 6.4, 6.5, 6.6, 6.6, 6.4, 6.5, 6.6, 6.4, 6.4, 6.6];
+          const INNER_RADIUS = [5.7, 5.7, 5.8, 5.9, 5.9, 5.7, 5.9, 5.7, 5.9, 5.8,
+          5.9, 5.9, 5.7, 5.8, 5.7, 5.9, 5.8, 5.9, 5.7, 5.7, 5.8, 5.7, 5.9, 5.7, 5.9];
+          const DOT_HEIGHT = [0.9, 0.7, 0.8, 0.6, 1];
           // TODO:loop it with for let
-          // for (let i = 0; i <= 2; i += 1) {
-          //   for (let j = 0; j <= 2; j += 1) {
-          //     for (let m = 0; m <= 2; m += 1) {
-          //       for (let n = 0; n <= 2; n += 1) {
-          //         for (let k = 0; k <= 6; k += 1) {
-          //           // buildModelWithParam(JSON.parse(request.responseText), id, 0.3, 2.2, 6.6, 5.9);
-          //           buildModelWithParam(
-          //             JSON.parse(request.responseText),
-          //             id,
-          //             DOT_WIDTH[i],
-          //             OFFSET[j],
-          //             OUTER_RADIUS[m],
-          //             INNER_RADIUS[n],
-          //             DOT_HEIGHT[k]
-          //           );
-          //         }
-          //       }
-          //     }
-          //   }
-          // }
-          buildModelWithParam(
-            JSON.parse(request.responseText),
-            id,
-            DOT_WIDTH[0],
-            OFFSET[0],
-            OUTER_RADIUS[0],
-            INNER_RADIUS[0],
-            DOT_HEIGHT[0]
-          );
+          let m=0;
+
+          for (let i = 0; i < 5; i += 1) {
+            for (let j = 0; j < 5; j += 1) {
+                  // buildModelWithParam(JSON.parse(request.responseText), id, 0.3, 2.2, 6.6, 5.9);
+                  buildModelWithParam(
+                    JSON.parse(request.responseText),
+                    id,
+                    DOT_WIDTH[j],
+                    2.2,
+                    OUTER_RADIUS[i*5+j],
+                    INNER_RADIUS[i*5+j],
+                    DOT_HEIGHT[i]
+                  );
+                  console.log(i*5+j);
+            }
+          }
+          // buildModelWithParam(
+          //   JSON.parse(request.responseText),
+          //   id,
+          //   DOT_WIDTH[0],
+          //   OFFSET[0],
+          //   OUTER_RADIUS[0],
+          //   INNER_RADIUS[0],
+          //   DOT_HEIGHT[0]
+          // );
         }
       }
     };
